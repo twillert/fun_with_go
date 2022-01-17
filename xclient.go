@@ -4,9 +4,21 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"os"
 
 	"golang.org/x/crypto/ssh"
 )
+
+func create_session(c *ssh.Client, cmd string) *ssh.Session {
+	fmt.Println("inside create_session")
+	s, err := c.NewSession()
+	if err != nil {
+		log.Fatal("Failed to create session: ", err)
+	}
+	defer s.Close()
+	s.Run(cmd)
+	return s
+}
 
 func main() {
 	// var hostKey ssh.PublicKey
@@ -18,7 +30,7 @@ func main() {
 	config := &ssh.ClientConfig{
 		User: os.Getenv("USER"),
 		Auth: []ssh.AuthMethod{
-			ssh.Password("xxxxxx"),
+			ssh.Password("qq"),
 		},
 		// HostKeyCallback: ssh.FixedHostKey(hostKey),
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
@@ -41,7 +53,7 @@ func main() {
 	// the remote side using the Run method.
 	var b bytes.Buffer
 	session.Stdout = &b
-	if err := session.Run("/usr/bin/whoami"); err != nil {
+	if err := session.Run("/usr/bin/ls -l"); err != nil {
 		log.Fatal("Failed to run: " + err.Error())
 	}
 	fmt.Println(b.String())
