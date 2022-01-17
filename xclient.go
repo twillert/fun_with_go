@@ -16,9 +16,9 @@ func main() {
 	// implementation of AuthMethod via the Auth field in ClientConfig,
 	// and provide a HostKeyCallback.
 	config := &ssh.ClientConfig{
-		User: "thomas",
+		User: os.Getenv("USER"),
 		Auth: []ssh.AuthMethod{
-			ssh.Password("dmguld2B+"),
+			ssh.Password("xxxxxx"),
 		},
 		// HostKeyCallback: ssh.FixedHostKey(hostKey),
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
